@@ -17,11 +17,11 @@ class DataFile
 
     public function search(File $file): ?Rom
     {
-        $size = $file->size();
+        $size = $file->getSize();
         if ($roms = $this->xml->xpath("//rom[@size='$size']")) {
             $md5 = $file->md5();
             foreach ($roms as $rom) {
-                if ($rom['md5'] == $md5) {
+                if (0 == strcasecmp((string) $rom['md5'], $md5)) {
                     return new Rom($rom);
                 }
             }
