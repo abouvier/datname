@@ -2,20 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Logiqx\File\Zip;
+namespace DatName\File\Zip;
 
-use Logiqx\File\Zip;
-use RuntimeException;
+use DatName\File\Generic;
+use DatName\File\Zip;
+use DatName\Path;
+use DatName\Stream;
+use ZipArchive;
 
-class Nes extends Zip
+final class Nes extends Zip
 {
-    public function __construct(string $filename)
+    public static function validate(Path $file): bool
     {
-        parent::__construct($filename);
-        $header = fread($this->stream, 16);
-        if ("NES\x1A" != substr($header, 0, 4)) {
-            throw new RuntimeException('invalid header');
+        if (!extension_loaded('zip')) {
+            return false;
         }
+        $zip = new ZipArchive();
+        if (true !== $zip->open($file->getPathname())) {
+            return false;
+        }
+        if (!($stream = $zip->getStream($file->getEntryname()))) {
+            return false;
+        }
+        $header = fread($stream, 16);
+
+        return 16 == strlen($header) and str_starts_with($header, "NES\x1A");
+    }
+
+    public function getCrc(): string
+    {
+        return Generic::getCrc();
     }
 
     public function getSize(): int
@@ -23,8 +39,11 @@ class Nes extends Zip
         return parent::getSize() - 16;
     }
 
-    public function crc(): string
+    public function getStream(): Stream
     {
-        return $this->hash('crc32b');
+        $stream = parent::getStream();
+        $stream->seek(16);
+
+        return $stream;
     }
 }

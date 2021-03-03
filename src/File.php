@@ -2,54 +2,72 @@
 
 declare(strict_types=1);
 
-namespace Logiqx;
+namespace DatName;
 
-use RuntimeException;
-use SplFileInfo;
+use DatName\Exception\Filesystem;
+use DatName\Exception\Filesystem\FileAlreadyExists;
+use DatName\Game\Rom;
+use DatName\Interface\File as FileInterface;
 
-class File extends SplFileInfo
+final class File
 {
-    protected $stream;
+    private ?Hash $hash;
 
-    public function __construct(string $filename)
+    public function __construct(
+        private FileInterface $file,
+        private array $algos,
+        private bool $cache,
+    ) {
+    }
+
+    public function __toString(): string
     {
-        $this->stream = fopen($filename, 'rb');
-        if (!$this->stream) {
-            throw new RuntimeException('cannot open file');
+        return strval($this->file);
+    }
+
+    public function getHash(): Hash
+    {
+        if ($this->cache and isset($this->hash)) {
+            return $this->hash;
         }
-        parent::__construct($filename);
+        if ($this->algos == [Hash::CRC]) {
+            return $this->hash = new Hash([
+                Hash::CRC => $this->file->getCrc(),
+            ]);
+        }
+        $hashes = [];
+        foreach ($this->algos as $algo) {
+            $hashes[$algo] = hash_init($algo);
+        }
+        $stream = $this->file->getStream();
+        while (!$stream->eof()) {
+            $data = $stream->read($this->file::READ_SIZE);
+            foreach ($hashes as &$hash) {
+                hash_update($hash, $data);
+            }
+        }
+
+        return $this->hash = new Hash(array_map('hash_final', $hashes));
     }
 
-    protected function hash(string $algo): string
+    public function matches(Rom $rom): bool
     {
-        $hash = hash_init($algo);
-        $size = hash_update_stream($hash, $this->stream);
-        fseek($this->stream, -$size, SEEK_CUR);
-
-        return hash_final($hash);
+        return $this->file->getSize() == $rom->getSize() and $this->getHash()->equals($rom->getHash());
     }
 
-    public function crc(): string
+    public function namedAfter(Rom $rom): bool
     {
-        return $this->hash('crc32b');
-    }
-
-    public function md5(): string
-    {
-        return $this->hash('md5');
-    }
-
-    public function sha1(): string
-    {
-        return $this->hash('sha1');
+        return $this->file->getFilename() == $rom;
     }
 
     public function rename(Rom $rom): void
     {
-        $newpathname = $this->getPath().DIRECTORY_SEPARATOR.$rom->name;
-        if (file_exists($newpathname)) {
-            throw new RuntimeException('file name already exists');
+        $newname = $this->file->getDatname($rom);
+        if ($this->file->exists($newname)) {
+            throw new FileAlreadyExists(sprintf("cannot rename file '%s' to '%s' because the target already exists", $this->file, $newname));
         }
-        rename($this->getPathname(), $newpathname);
+        if (!$this->file->rename($newname)) {
+            throw new Filesystem(sprintf("cannot rename file '%s' to '%s'", $this->file, $newname));
+        }
     }
 }

@@ -2,24 +2,30 @@
 
 declare(strict_types=1);
 
-namespace Logiqx\File;
+namespace DatName\File;
 
-use Logiqx\File;
-use RuntimeException;
+use DatName\Path;
+use DatName\Stream;
 
-class Nes extends File
+final class Nes extends Generic
 {
-    public function __construct(string $filename)
+    public static function validate(Path $file): bool
     {
-        parent::__construct($filename);
-        $header = fread($this->stream, 16);
-        if ("NES\x1A" != substr($header, 0, 4)) {
-            throw new RuntimeException('invalid header');
-        }
+        $header = $file->openFile('rb')->fread(16);
+
+        return 16 == strlen($header) and str_starts_with($header, "NES\x1A");
     }
 
     public function getSize(): int
     {
         return parent::getSize() - 16;
+    }
+
+    public function getStream(): Stream
+    {
+        $stream = parent::getStream();
+        $stream->seek(16);
+
+        return $stream;
     }
 }

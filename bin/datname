@@ -1,0 +1,118 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__.'/../vendor/autoload.php';
+
+use DatName\Datafile;
+use DatName\Factory\Datafile as DatafileFactory;
+use DatName\Factory\Set as SetFactory;
+use DatName\Hash;
+use DatName\Interface\Exception;
+use DatName\Path;
+use DatName\Set;
+
+$options = getopt('d:h:', ['datafile:', 'hash:', 'help'], $index);
+
+foreach ($options as $option => $value) {
+    switch ($option) {
+    case 'd':
+    case 'datafile':
+        if (is_array($value)) {
+            $value = end($value);
+        }
+        $datapath = $value;
+        break;
+    case 'h':
+    case 'hash':
+        if (is_array($value)) {
+            $value = implode(',', $value);
+        }
+        $algos = [];
+        foreach (array_unique(explode(',', $value)) as $algo) {
+            switch ($algo) {
+            case 'crc':
+                $algos[] = Hash::CRC;
+                break;
+            case 'md5':
+                $algos[] = Hash::MD5;
+                break;
+            case 'sha1':
+                $algos[] = Hash::SHA1;
+                break;
+            default:
+                fprintf(STDERR, "'%s' is not a valid hashing algorithm: crc, md5 or sha1\n", $algo);
+                exit(1);
+            }
+        }
+        break;
+    case 'help':
+        printf("datname [-d|--datafile PATH] [-h|--hash NAME[,NAME...]] [--help] [PATH...]\n");
+        exit;
+    }
+}
+
+foreach (array_slice($argv, $index) ?: ['.'] as $path) {
+    $datafile = new Datafile(DatafileFactory::create(new Path($datapath ?? $path)));
+    foreach (new FilesystemIterator($path) as $setname) {
+        $best = ['score' => 0, 'game' => null];
+        $set = new Set(SetFactory::create(Path::createFromSplFileInfo($setname)), $algos ?? [Hash::CRC]);
+        foreach ($datafile as $game) {
+            $score = $set->similarityWith($game);
+            if ($score > $best['score']) {
+                $best['score'] = $score;
+                $best['game'] = $game;
+            }
+            if ($score >= 1.0) {
+                break;
+            }
+        }
+
+        if (!isset($best['game'])) {
+            printf("[UNKNOWN] set '%s' is bad\n", $set);
+            continue;
+        }
+
+        $complete = true;
+        foreach ($best['game'] as $rom) {
+            $found = false;
+            foreach ($set as $file) {
+                if ($file->matches($rom)) {
+                    if ($file->namedAfter($rom)) {
+                        printf("[OK] file '%s' is valid (status: %s)\n", $file, strtoupper($rom->getStatus()));
+                    } else {
+                        $oldname = strval($file);
+                        try {
+                            $file->rename($rom);
+                            printf("[RENAMED] file '%s' renamed to '%s'\n", $oldname, $file);
+                        } catch (Exception $e) {
+                            fprintf(STDERR, "[ERROR] %s\n", $e->getMessage());
+                        }
+                    }
+                    $found = true;
+                }
+            }
+            if (!$found) {
+                printf("[MISSING] set '%s' is missing file '%s'\n", $set, $rom);
+                $complete = false;
+            }
+        }
+
+        if ($set->isDirectory()) {
+            if ($set->namedAfter($best['game'])) {
+                if ($complete) {
+                    printf("[OK] set '%s' is good\n", $set);
+                } else {
+                    printf("[INCOMPLETE] set '%s' is missing some files\n", $set);
+                }
+            } else {
+                $oldname = strval($set);
+                try {
+                    $set->rename($best['game']);
+                    printf("[RENAMED] set '%s' renamed to '%s'\n", $oldname, $set);
+                } catch (Exception $e) {
+                    fprintf(STDERR, "[ERROR] %s\n", $e->getMessage());
+                }
+            }
+        }
+    }
+}

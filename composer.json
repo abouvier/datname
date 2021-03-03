@@ -1,7 +1,33 @@
 {
+	"name": "abouvier/datname",
+	"description": "ROM renaming tool",
+	"keywords": [
+		"datafile",
+		"game",
+		"logiqx",
+		"rom"
+	],
+	"license": "Apache-2.0",
+	"authors": [{
+		"name": "Alexandre Bouvier",
+		"email": "contact@amb.tf"
+	}],
+	"require": {
+		"php": ">=8.0",
+		"ext-hash": "*",
+		"ext-simplexml": "*",
+		"ext-spl": "*",
+		"lunkkun/caching-generator": "^3.0"
+	},
+	"suggest": {
+		"ext-zip": "Needed to support ZIP sets"
+	},
 	"autoload": {
 		"psr-4": {
-			"Logiqx\\": "src"
+			"DatName\\": "src/"
 		}
-	}
+	},
+	"bin": [
+		"bin/datname"
+	]
 }
