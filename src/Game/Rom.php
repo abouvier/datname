@@ -13,7 +13,7 @@ final class Rom
         private string $name,
         private int $size,
         private Hash $hash,
-        private string $status = Status::GOOD,
+        private Status $status = Status::GOOD,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class Rom
         return $this->size;
     }
 
-    public function getStatus(): string
+    public function getStatus(): Status
     {
         return $this->status;
     }

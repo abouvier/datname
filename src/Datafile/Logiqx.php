@@ -48,7 +48,7 @@ final class Logiqx implements Datafile
                     strval($rom['name']),
                     intval($rom['size']),
                     new Hash($hashes),
-                    isset($rom['status']) ? strval($rom['status']) : Status::GOOD,
+                    Status::tryFrom(strval($rom['status'])) ?? Status::GOOD,
                 );
             }
             yield new Game(

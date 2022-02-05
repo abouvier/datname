@@ -78,7 +78,7 @@ foreach (array_slice($argv, $index) ?: ['.'] as $path) {
             foreach ($set as $file) {
                 if ($file->matches($rom)) {
                     if ($file->namedAfter($rom)) {
-                        printf("[OK] file '%s' is valid (status: %s)\n", $file, strtoupper($rom->getStatus()));
+                        printf("[OK] file '%s' is valid (status: %s)\n", $file, strtoupper($rom->getStatus()->value));
                     } else {
                         $oldname = strval($file);
                         try {

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DatName\Game\Rom;
 
-abstract class Status
+enum Status: string
 {
-    public const BAD_DUMP = 'baddump';
-    public const GOOD = 'good';
-    public const NO_DUMP = 'nodump';
-    public const VERIFIED = 'verified';
+    case BAD_DUMP = 'baddump';
+    case GOOD = 'good';
+    case NO_DUMP = 'nodump';
+    case VERIFIED = 'verified';
 }
