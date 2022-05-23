@@ -7,8 +7,9 @@ namespace DatName;
 use Countable;
 use Generator;
 use IteratorAggregate;
+use Stringable;
 
-final class Game implements Countable, IteratorAggregate
+final class Game implements Countable, IteratorAggregate, Stringable
 {
     public function __construct(
         private string $name,

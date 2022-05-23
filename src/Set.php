@@ -12,8 +12,9 @@ use DatName\Set\Zip;
 use Generator;
 use IteratorAggregate;
 use Lunkkun\CachingGenerator\CachingGenerator;
+use Stringable;
 
-final class Set implements IteratorAggregate
+final class Set implements IteratorAggregate, Stringable
 {
     private ?CachingGenerator $files;
 

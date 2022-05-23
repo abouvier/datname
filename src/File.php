@@ -8,8 +8,9 @@ use DatName\Exception\Filesystem;
 use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Game\Rom;
 use DatName\Interface\File as FileInterface;
+use Stringable;
 
-final class File
+final class File implements Stringable
 {
     private ?Hash $hash;
 

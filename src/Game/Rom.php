@@ -6,8 +6,9 @@ namespace DatName\Game;
 
 use DatName\Game\Rom\Status;
 use DatName\Hash;
+use Stringable;
 
-final class Rom
+final class Rom implements Stringable
 {
     public function __construct(
         private string $name,
