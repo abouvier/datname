@@ -20,7 +20,7 @@ final class Set implements IteratorAggregate, Stringable
 
     public function __construct(
         private SetInterface $set,
-        private array $algos = [Hash::MD5],
+        private Algos $algos,
         private bool $cache = true,
     ) {
     }

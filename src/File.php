@@ -7,16 +7,17 @@ namespace DatName;
 use DatName\Exception\Filesystem;
 use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Game\Rom;
+use DatName\Hash\Algo;
 use DatName\Interface\File as FileInterface;
 use Stringable;
 
 final class File implements Stringable
 {
-    private ?Hash $hash;
+    private Hashes $hashes;
 
     public function __construct(
         private FileInterface $file,
-        private array $algos,
+        private Algos $algos,
         private bool $cache,
     ) {
     }
@@ -26,34 +27,37 @@ final class File implements Stringable
         return strval($this->file);
     }
 
-    public function getHash(): Hash
+    public function getHashes(): Hashes
     {
-        if ($this->cache and isset($this->hash)) {
-            return $this->hash;
+        if ($this->cache and isset($this->hashes)) {
+            return $this->hashes;
         }
-        if ($this->algos == [Hash::CRC]) {
-            return $this->hash = new Hash([
-                Hash::CRC => $this->file->getCrc(),
+        if (1 == count($this->algos) and $this->algos->contains(Algo::CRC)) {
+            return $this->hashes = new Hashes([
+                new Hash(Algo::CRC, $this->file->getCrc()),
             ]);
         }
         $hashes = [];
         foreach ($this->algos as $algo) {
-            $hashes[$algo] = hash_init($algo);
+            $hashes[$algo->value] = hash_init($algo->value);
         }
         $stream = $this->file->getStream();
         while (!$stream->eof()) {
             $data = $stream->read($this->file::READ_SIZE);
-            foreach ($hashes as &$hash) {
+            foreach ($hashes as $hash) {
                 hash_update($hash, $data);
             }
         }
+        foreach ($hashes as $algo => &$hash) {
+            $hash = new Hash(Algo::from($algo), hash_final($hash));
+        }
 
-        return $this->hash = new Hash(array_map('hash_final', $hashes));
+        return $this->hashes = new Hashes($hashes);
     }
 
     public function matches(Rom $rom): bool
     {
-        return $this->file->getSize() == $rom->getSize() and $this->getHash()->equals($rom->getHash());
+        return $this->file->getSize() == $rom->getSize() and $this->getHashes()->matches($rom->getHashes());
     }
 
     public function namedAfter(Rom $rom): bool

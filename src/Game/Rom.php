@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace DatName\Game;
 
 use DatName\Game\Rom\Status;
-use DatName\Hash;
+use DatName\Hashes;
 use Stringable;
 
 final class Rom implements Stringable
@@ -13,7 +13,7 @@ final class Rom implements Stringable
     public function __construct(
         private string $name,
         private int $size,
-        private Hash $hash,
+        private Hashes $hashes,
         private Status $status = Status::GOOD,
     ) {
     }
@@ -23,9 +23,9 @@ final class Rom implements Stringable
         return $this->getName();
     }
 
-    public function getHash(): Hash
+    public function getHashes(): Hashes
     {
-        return $this->hash;
+        return $this->hashes;
     }
 
     public function getName(): string

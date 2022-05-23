@@ -4,24 +4,19 @@ declare(strict_types=1);
 
 namespace DatName;
 
-final class Hash
-{
-    public const CRC = 'crc32b';
-    public const MD5 = 'md5';
-    public const SHA1 = 'sha1';
+use DatName\Hash\Algo;
+use Stringable;
 
-    public function __construct(private array $hashes = [])
-    {
+final class Hash implements Stringable
+{
+    public function __construct(
+        public readonly Algo $algo,
+        public readonly string $hash,
+    ) {
     }
 
-    public function equals(self $that): bool
+    public function __toString(): string
     {
-        foreach (array_keys($this->hashes) as $algo) {
-            if (isset($this->hashes[$algo], $that->hashes[$algo]) and $this->hashes[$algo] != $that->hashes[$algo]) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->hash;
     }
 }

@@ -6,7 +6,7 @@ namespace DatName\File;
 
 use DatName\Exception\Filesystem\AccessDenied;
 use DatName\Game\Rom;
-use DatName\Hash;
+use DatName\Hash\Algo;
 use DatName\Interface\File;
 use DatName\Path;
 use DatName\Stream;
@@ -36,7 +36,7 @@ class Generic implements File
 
     public function getCrc(): string
     {
-        $crc = hash_init(Hash::CRC);
+        $crc = hash_init(Algo::CRC->value);
         hash_update_stream($crc, $this->getStream()->getInnerStream());
 
         return hash_final($crc);
