@@ -22,12 +22,13 @@
 	"suggest": {
 		"ext-dom": "Needed to support Logiqx datfiles",
 		"ext-libxml": "Needed to support Logiqx datfiles",
+		"ext-parle": "Needed to support ClrMamePro datfiles",
 		"ext-simplexml": "Needed to support Logiqx datfiles",
 		"ext-zip": "Needed to support ZIP sets"
 	},
 	"autoload": {
 		"psr-4": {
-			"DatName\\": "src/"
+			"DatName\\": ["lib/", "src/"]
 		}
 	},
 	"bin": [

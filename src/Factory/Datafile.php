@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\Factory;
 
+use DatName\Datafile\Clrmamepro;
 use DatName\Datafile\Directory;
 use DatName\Datafile\Dummy;
 use DatName\Datafile\Logiqx;
@@ -14,7 +15,12 @@ class Datafile
 {
     public static function create(Path $datafile): DatafileInterface
     {
-        foreach ([Directory::class, Logiqx::class, Dummy::class] as $class) {
+        foreach ([
+            Directory::class,
+            Logiqx::class,
+            Clrmamepro::class,
+            Dummy::class,
+        ] as $class) {
             if ($class::validate($datafile)) {
                 return new $class($datafile);
             }
