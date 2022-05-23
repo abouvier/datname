@@ -14,7 +14,7 @@ final class Game implements Countable, IteratorAggregate, Stringable
     public function __construct(
         private string $name,
         private string $description,
-        private array $roms,
+        private iterable|Countable $roms,
     ) {
     }
 
