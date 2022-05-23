@@ -11,23 +11,49 @@ use DatName\Game\Rom\Status;
 use DatName\Hash;
 use DatName\Interface\Datafile;
 use DatName\Path;
+use DOMDocument;
 use Generator;
 
 final class Logiqx implements Datafile
 {
     public static function validate(Path $datafile): bool
     {
-        return !$datafile->isDir();
+        if ($datafile->isDir()) {
+            return false;
+        }
+        foreach (['dom', 'libxml', 'SimpleXML'] as $ext) {
+            if (!extension_loaded($ext)) {
+                return false;
+            }
+        }
+        libxml_set_external_entity_loader(
+            function (?string $public_id, string $system_id): string {
+                if ('http://www.logiqx.com/Dats/datafile.dtd' == $system_id) {
+                    return __DIR__.'/../../assets/datafile.dtd';
+                }
+
+                return $system_id;
+            }
+        );
+        $use_errors = libxml_use_internal_errors(true);
+        $xml = new DOMDocument();
+        $xml->load(strval($datafile));
+        $validate = $xml->validate();
+        libxml_use_internal_errors($use_errors);
+        libxml_set_external_entity_loader(null);
+
+        return $validate;
     }
 
     public function __construct(private Path $datafile)
     {
-        libxml_use_internal_errors(true);
     }
 
     public function getIterator(): Generator
     {
+        $use_errors = libxml_use_internal_errors(true);
         $xml = simplexml_load_file($this->datafile->getPathname());
+        libxml_use_internal_errors($use_errors);
         if (false === $xml) {
             throw new AccessDenied('xml load error');
         }

@@ -16,7 +16,7 @@
 <!ELEMENT datafile (header?, game+)>
 	<!ATTLIST datafile build CDATA #IMPLIED>
 	<!ATTLIST datafile debug (yes|no) "no">
-	<!ELEMENT header (name, description, category?, version, date?, author, email?, homepage?, url?, comment?, clrmamepro?, romcenter?)>
+	<!ELEMENT header (name, description, category?, version, date?, author, email?, homepage?, url?, comment?, (clrmamepro | romcenter)*)>
 		<!ELEMENT name (#PCDATA)>
 		<!ELEMENT description (#PCDATA)>
 		<!ELEMENT category (#PCDATA)>
@@ -40,7 +40,7 @@
 			<!ATTLIST romcenter lockrommode (yes|no) "no">
 			<!ATTLIST romcenter lockbiosmode (yes|no) "no">
 			<!ATTLIST romcenter locksamplemode (yes|no) "no">
-	<!ELEMENT game (comment*, description, year?, manufacturer?, release*, biosset*, rom*, disk*, sample*, archive*)>
+	<!ELEMENT game (comment*, category?, description, game_id?, year?, manufacturer?, release*, biosset*, rom*, disk*, sample*, archive*)>
 		<!ATTLIST game name CDATA #REQUIRED>
 		<!ATTLIST game sourcefile CDATA #IMPLIED>
 		<!ATTLIST game isbios (yes|no) "no">
@@ -49,6 +49,7 @@
 		<!ATTLIST game sampleof CDATA #IMPLIED>
 		<!ATTLIST game board CDATA #IMPLIED>
 		<!ATTLIST game rebuildto CDATA #IMPLIED>
+		<!ELEMENT game_id (#PCDATA)>
 		<!ELEMENT year (#PCDATA)>
 		<!ELEMENT manufacturer (#PCDATA)>
 		<!ELEMENT release EMPTY>
@@ -66,10 +67,13 @@
 			<!ATTLIST rom size CDATA #REQUIRED>
 			<!ATTLIST rom crc CDATA #IMPLIED>
 			<!ATTLIST rom sha1 CDATA #IMPLIED>
+			<!ATTLIST rom sha256 CDATA #IMPLIED>
 			<!ATTLIST rom md5 CDATA #IMPLIED>
 			<!ATTLIST rom merge CDATA #IMPLIED>
 			<!ATTLIST rom status (baddump|nodump|good|verified) "good">
 			<!ATTLIST rom date CDATA #IMPLIED>
+			<!ATTLIST rom serial CDATA #IMPLIED>
+			<!ATTLIST rom header CDATA #IMPLIED>
 		<!ELEMENT disk EMPTY>
 			<!ATTLIST disk name CDATA #REQUIRED>
 			<!ATTLIST disk sha1 CDATA #IMPLIED>
