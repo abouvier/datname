@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace DatName\Parser;
 
+use DatName\Exception\Filesystem\AccessDenied;
+use DatName\Exception\Parser as ParserException;
 use DatName\Interface\Parser as ParserInterface;
 use Parle\Lexer;
 use Parle\Parser;
-use Parle\ParserException;
 use Parle\Token;
 use SplFixedArray;
 
@@ -16,6 +17,22 @@ final class Clrmamepro implements ParserInterface
     private Lexer $lexer;
     private Parser $parser;
     private SplFixedArray $productions;
+
+    private static function readFile(string $filename): string
+    {
+        if (!is_file($filename)) {
+            throw new AccessDenied(sprintf("file '%s' does not exist", $filename));
+        }
+        if (!is_readable($filename)) {
+            throw new AccessDenied(sprintf("file '%s' is not readable", $filename));
+        }
+        $data = file_get_contents($filename);
+        if (false === $data) {
+            throw new AccessDenied(sprintf("file '%s' cannot be read", $filename));
+        }
+
+        return $data;
+    }
 
     public function __construct()
     {
@@ -98,7 +115,7 @@ final class Clrmamepro implements ParserInterface
 
     public function parseFile(string $filename): iterable
     {
-        return $this->parse(file_get_contents($filename));
+        return $this->parse(self::readFile($filename));
     }
 
     public function validate(string $input): bool
@@ -108,6 +125,6 @@ final class Clrmamepro implements ParserInterface
 
     public function validateFile(string $filename): bool
     {
-        return $this->validate(file_get_contents($filename));
+        return $this->validate(self::readFile($filename));
     }
 }
