@@ -51,7 +51,11 @@ class File implements Stringable
 
     public function matches(Rom $rom): bool
     {
-        return $this->file->getSize() == $rom->getSize() and $this->getHashes()->matches($rom->getHashes());
+        if ($this->file->getSize() != $rom->getSize()) {
+            return false;
+        }
+
+        return $this->getHashes()->matches($rom->getHashes());
     }
 
     public function namedAfter(Rom $rom): bool

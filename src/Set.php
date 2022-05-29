@@ -15,10 +15,8 @@ use Stringable;
 
 class Set implements IteratorAggregate, Stringable
 {
-    public function __construct(
-        private SetInterface $set,
-        private Algos $algos,
-    ) {
+    public function __construct(private SetInterface $set, private Algos $algos)
+    {
     }
 
     public function __toString(): string
