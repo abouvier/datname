@@ -13,4 +13,9 @@ final class Algos extends AbstractSet
     {
         return Algo::class;
     }
+
+    public function onlyCrc(): bool
+    {
+        return 1 == count($this) and $this->contains(Algo::CRC);
+    }
 }

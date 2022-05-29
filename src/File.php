@@ -32,7 +32,7 @@ final class File implements Stringable
         if ($this->cache and isset($this->hashes)) {
             return $this->hashes;
         }
-        if (1 == count($this->algos) and $this->algos->contains(Algo::CRC)) {
+        if ($this->algos->onlyCrc()) {
             return $this->hashes = new Hashes([
                 new Hash(Algo::CRC, $this->file->getFastCrc()),
             ]);
