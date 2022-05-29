@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace DatName\Exception;
 
-class Stream extends Runtime
+use DatName\Interface\Exception;
+use RuntimeException;
+
+class Stream extends RuntimeException implements Exception
 {
 }
