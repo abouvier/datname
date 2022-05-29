@@ -2,10 +2,19 @@
 	"name": "abouvier/datname",
 	"description": "ROM renaming tool",
 	"keywords": [
+		"clrmamepro",
 		"datafile",
+		"emulator",
 		"game",
+		"hash",
 		"logiqx",
-		"rom"
+		"mame",
+		"no-intro",
+		"redump",
+		"rename",
+		"rom",
+		"tosec",
+		"xml"
 	],
 	"license": "Apache-2.0",
 	"authors": [{
@@ -31,7 +40,8 @@
 			"DatName\\": "src/"
 		}
 	},
-	"bin": [
-		"bin/datname"
-	]
+	"config": {
+		"sort-packages": true
+	},
+	"bin": ["bin/datname"]
 }
