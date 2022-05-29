@@ -11,14 +11,11 @@ use DatName\Hash\Algo;
 use DatName\Interface\File as FileInterface;
 use Stringable;
 
-final class File implements Stringable
+class File implements Stringable
 {
-    private Hashes $hashes;
-
     public function __construct(
         private FileInterface $file,
         private Algos $algos,
-        private bool $cache,
     ) {
     }
 
@@ -29,11 +26,8 @@ final class File implements Stringable
 
     public function getHashes(): Hashes
     {
-        if ($this->cache and isset($this->hashes)) {
-            return $this->hashes;
-        }
         if ($this->algos->onlyCrc()) {
-            return $this->hashes = new Hashes([
+            return new Hashes([
                 new Hash(Algo::CRC, $this->file->getFastCrc()),
             ]);
         }
@@ -52,7 +46,7 @@ final class File implements Stringable
             $hash = new Hash(Algo::from($algo), hash_final($hash));
         }
 
-        return $this->hashes = new Hashes($hashes);
+        return new Hashes($hashes);
     }
 
     public function matches(Rom $rom): bool

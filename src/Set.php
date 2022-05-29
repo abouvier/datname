@@ -9,19 +9,15 @@ use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Interface\Set as SetInterface;
 use DatName\Set\Directory;
 use DatName\Set\Zip;
-use Generator;
+use Iterator;
 use IteratorAggregate;
-use Lunkkun\CachingGenerator\CachingGenerator;
 use Stringable;
 
-final class Set implements IteratorAggregate, Stringable
+class Set implements IteratorAggregate, Stringable
 {
-    private ?CachingGenerator $files;
-
     public function __construct(
         private SetInterface $set,
         private Algos $algos,
-        private bool $cache = true,
     ) {
     }
 
@@ -30,18 +26,11 @@ final class Set implements IteratorAggregate, Stringable
         return strval($this->set);
     }
 
-    public function getIterator(): CachingGenerator
+    public function getIterator(): Iterator
     {
-        if ($this->cache and isset($this->files)) {
-            return $this->files;
+        foreach ($this->set as $file) {
+            yield new FileCache($file, $this->algos);
         }
-        $files = function (): Generator {
-            foreach ($this->set as $file) {
-                yield new File($file, $this->algos, $this->cache);
-            }
-        };
-
-        return $this->files = new CachingGenerator($files());
     }
 
     public function isDirectory(): bool
@@ -68,7 +57,6 @@ final class Set implements IteratorAggregate, Stringable
         if (!$this->set->rename($newname)) {
             throw new Filesystem(sprintf("cannot rename set '%s' to '%s'", $this->set, $newname));
         }
-        unset($this->files);
     }
 
     public function similarityWith(Game $game): float

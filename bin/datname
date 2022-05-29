@@ -10,7 +10,7 @@ use DatName\Factory\Set as SetFactory;
 use DatName\Hash\Algo;
 use DatName\Interface\Exception;
 use DatName\Path;
-use DatName\Set;
+use DatName\SetCache;
 
 $options = getopt('a:d:h', ['algo:', 'datafile:', 'help'], $index);
 
@@ -60,7 +60,7 @@ foreach (array_slice($argv, $index) ?: ['.'] as $path) {
     $datafile = new Datafile(DatafileFactory::create(new Path($datapath ?? $path)));
     foreach (new FilesystemIterator($path) as $setname) {
         $best = ['score' => 0, 'game' => null];
-        $set = new Set(SetFactory::create(Path::createFromSplFileInfo($setname)), $algos ?? new Algos([Algo::CRC]));
+        $set = new SetCache(SetFactory::create(Path::createFromSplFileInfo($setname)), $algos ?? new Algos([Algo::CRC]));
         foreach ($datafile as $game) {
             $score = $set->similarityWith($game);
             if ($score > $best['score']) {
