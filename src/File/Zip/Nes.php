@@ -29,9 +29,9 @@ final class Nes extends Zip
         return 16 == strlen($header) and str_starts_with($header, "NES\x1A");
     }
 
-    public function getCrc(): string
+    public function getFastCrc(): string
     {
-        return Generic::getCrc();
+        return Generic::getFastCrc();
     }
 
     public function getSize(): int

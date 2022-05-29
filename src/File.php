@@ -34,7 +34,7 @@ final class File implements Stringable
         }
         if (1 == count($this->algos) and $this->algos->contains(Algo::CRC)) {
             return $this->hashes = new Hashes([
-                new Hash(Algo::CRC, $this->file->getCrc()),
+                new Hash(Algo::CRC, $this->file->getFastCrc()),
             ]);
         }
         $hashes = [];

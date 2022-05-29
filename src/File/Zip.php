@@ -32,14 +32,14 @@ class Zip extends Generic
         return false !== $this->getInnerZip()->locateName($newname);
     }
 
-    public function getCrc(): string
-    {
-        return sprintf('%08x', $this->getInnerZip()->statName($this->getFilename())['crc']);
-    }
-
     public function getDatname(Rom $rom): string
     {
         return $rom->getName();
+    }
+
+    public function getFastCrc(): string
+    {
+        return sprintf('%08x', $this->getInnerZip()->statName($this->getFilename())['crc']);
     }
 
     public function getFilename(): string

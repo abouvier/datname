@@ -15,9 +15,9 @@ interface File extends Stringable
 
     public function exists(string $newname): bool;
 
-    public function getCrc(): string;
-
     public function getDatname(Rom $rom): string;
+
+    public function getFastCrc(): string;
 
     public function getFilename(): string;
 

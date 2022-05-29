@@ -34,17 +34,17 @@ class Generic implements File
         return file_exists($newname);
     }
 
-    public function getCrc(): string
+    public function getDatname(Rom $rom): string
+    {
+        return $this->file->getPath().DIRECTORY_SEPARATOR.$rom->getName();
+    }
+
+    public function getFastCrc(): string
     {
         $crc = hash_init(Algo::CRC->value);
         hash_update_stream($crc, $this->getStream()->getInnerStream());
 
         return hash_final($crc);
-    }
-
-    public function getDatname(Rom $rom): string
-    {
-        return $this->file->getPath().DIRECTORY_SEPARATOR.$rom->getName();
     }
 
     public function getFilename(): string
