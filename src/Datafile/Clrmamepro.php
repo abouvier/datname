@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace DatName\Datafile;
 
+use Abouvier\Clrmamepro\Parser;
 use DatName\Game;
 use DatName\Game\Rom;
 use DatName\Hash;
 use DatName\Hash\Algo;
 use DatName\Hashes;
 use DatName\Interface\Datafile;
-use DatName\Parser\Clrmamepro as ClrmameproParser;
 use DatName\Path;
+use Exception;
 use Generator;
 
 final class Clrmamepro implements Datafile
 {
     public static function validate(Path $datafile): bool
     {
-        if ($datafile->isDir()) {
+        if ($datafile->isDir() or !$datafile->getSize()) {
             return false;
         }
         if (!extension_loaded('parle')) {
             return false;
         }
-        $parser = new ClrmameproParser();
-
-        return $parser->validateFile(strval($datafile));
+        $parser = new Parser();
+        try {
+            return $parser->validate($datafile->readFile());
+        } catch (Exception) {
+            return false;
+        }
     }
 
     public function __construct(private Path $datafile)
@@ -35,8 +39,8 @@ final class Clrmamepro implements Datafile
 
     public function getIterator(): Generator
     {
-        $parser = new ClrmameproParser();
-        $sections = $parser->parseFile(strval($this->datafile));
+        $parser = new Parser();
+        $sections = $parser->parse($this->datafile->readFile());
         foreach ($sections['game'] as $game) {
             $roms = [];
             foreach ($game['rom'] as $rom) {

@@ -4,8 +4,58 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5b6c9d93b85bac1e248a943c1ba37c69",
+    "content-hash": "47cc81d4976099cff8d16b633d1623fe",
     "packages": [
+        {
+            "name": "abouvier/clrmamepro-parser",
+            "version": "v0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/abouvier/clrmamepro-parser.git",
+                "reference": "197e195cc2c0c0d10a86bff202dd902805d51d60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/abouvier/clrmamepro-parser/zipball/197e195cc2c0c0d10a86bff202dd902805d51d60",
+                "reference": "197e195cc2c0c0d10a86bff202dd902805d51d60",
+                "shasum": ""
+            },
+            "require": {
+                "ext-parle": "*",
+                "ext-spl": "*",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Abouvier\\Clrmamepro\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Alexandre Bouvier",
+                    "email": "contact@amb.tf"
+                }
+            ],
+            "description": "ClrMamePro data file parser",
+            "keywords": [
+                "datafile",
+                "emulator",
+                "game",
+                "parser",
+                "redump",
+                "rom"
+            ],
+            "support": {
+                "issues": "https://github.com/abouvier/clrmamepro-parser/issues",
+                "source": "https://github.com/abouvier/clrmamepro-parser/tree/v0.1.0"
+            },
+            "time": "2022-05-31T05:08:30+00:00"
+        },
         {
             "name": "lunkkun/caching-generator",
             "version": "v3.1.0",

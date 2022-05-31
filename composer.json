@@ -25,15 +25,16 @@
 		"php": ">=8.1",
 		"ext-hash": "*",
 		"ext-spl": "*",
+		"abouvier/clrmamepro-parser": "^0.1",
 		"lunkkun/caching-generator": "^3.1",
 		"ramsey/collection": "^1.2"
 	},
 	"suggest": {
 		"ext-dom": "Needed to support Logiqx datfiles",
 		"ext-libxml": "Needed to support Logiqx datfiles",
-		"ext-parle": "Needed to support ClrMamePro datfiles",
 		"ext-simplexml": "Needed to support Logiqx datfiles",
-		"ext-zip": "Needed to support ZIP sets"
+		"ext-zip": "Needed to support ZIP sets",
+		"abouvier/clrmamepro-parser": "Needed to support ClrMamePro datfiles"
 	},
 	"autoload": {
 		"psr-4": {

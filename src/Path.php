@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace DatName;
 
+use DatName\Exception\Filesystem;
 use SplFileInfo;
 
 final class Path extends SplFileInfo
@@ -23,6 +24,18 @@ final class Path extends SplFileInfo
     public function getEntryname(): string
     {
         return $this->entryname;
+    }
+
+    public function readFile(): string
+    {
+        set_error_handler(function (int $severity, string $message): bool {
+            throw new Filesystem($message);
+        });
+        try {
+            return file_get_contents(strval($this));
+        } finally {
+            restore_error_handler();
+        }
     }
 
     public function withEntryname(string $entryname): static
