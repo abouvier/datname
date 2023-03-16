@@ -8,6 +8,7 @@ use DatName\Factory\File as FileFactory;
 use DatName\Path;
 use FilesystemIterator;
 use Generator;
+use SplFileInfo;
 
 class Directory extends File
 {
@@ -18,6 +19,9 @@ class Directory extends File
 
     public function getIterator(): Generator
     {
+        /**
+         * @var SplFileInfo $file
+         */
         foreach (new FilesystemIterator($this->getPathname()) as $file) {
             if ($file->isDir()) {
                 continue;

@@ -11,11 +11,11 @@ final class Stream
 {
     private bool $seekable;
 
+    /**
+     * @param resource $stream
+     */
     public function __construct(private $stream)
     {
-        if (!is_resource($stream)) {
-            throw new InvalidArgument('not a resource');
-        }
         if ('stream' != get_resource_type($stream)) {
             throw new InvalidArgument('not a stream');
         }
@@ -27,6 +27,9 @@ final class Stream
         return feof($this->stream);
     }
 
+    /**
+     * @return resource
+     */
     public function getInnerStream()
     {
         return $this->stream;

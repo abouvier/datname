@@ -5,16 +5,23 @@ declare(strict_types=1);
 namespace DatName;
 
 use Countable;
+use DatName\Game\Rom;
 use Generator;
 use IteratorAggregate;
 use Stringable;
 
+/**
+ * @implements IteratorAggregate<int, Rom>
+ */
 final class Game implements Countable, IteratorAggregate, Stringable
 {
+    /**
+     * @param list<Rom> $roms
+     */
     public function __construct(
         private string $name,
         private string $description,
-        private iterable|Countable $roms,
+        private array $roms,
     ) {
     }
 
@@ -33,6 +40,9 @@ final class Game implements Countable, IteratorAggregate, Stringable
         return $this->description;
     }
 
+    /**
+     * @return Generator<int, Rom>
+     */
     public function getIterator(): Generator
     {
         foreach ($this->roms as $rom) {

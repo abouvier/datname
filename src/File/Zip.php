@@ -12,7 +12,7 @@ use ZipArchive;
 
 class Zip extends Generic
 {
-    protected ZipArchive $zip;
+    protected ?ZipArchive $zip = null;
 
     public static function validate(Path $file): bool
     {

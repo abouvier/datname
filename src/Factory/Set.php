@@ -14,10 +14,12 @@ class Set
 {
     public static function create(Path $set): SetInterface
     {
-        foreach ([Directory::class, Zip::class, File::class] as $class) {
+        foreach ([Directory::class, Zip::class] as $class) {
             if ($class::validate($set)) {
                 return new $class($set);
             }
         }
+
+        return new File($set);
     }
 }

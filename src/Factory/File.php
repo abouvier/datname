@@ -19,11 +19,12 @@ class File
             NesZip::class,
             Zip::class,
             Nes::class,
-            Generic::class,
         ] as $class) {
             if ($class::validate($file)) {
                 return new $class($file);
             }
         }
+
+        return new Generic($file);
     }
 }

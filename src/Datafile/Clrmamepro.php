@@ -41,8 +41,10 @@ final class Clrmamepro implements Datafile
     {
         $parser = new Parser();
         $sections = $parser->parse($this->datafile->readFile());
+        /** @var array $game */
         foreach ($sections['game'] as $game) {
             $roms = [];
+            /** @var array $rom */
             foreach ($game['rom'] as $rom) {
                 $hashes = new Hashes();
                 foreach ([
@@ -53,19 +55,19 @@ final class Clrmamepro implements Datafile
                 ] as $attr => $algo) {
                     if (isset($rom[$attr])) {
                         $hashes->add(
-                            new Hash($algo, strtolower(strval($rom[$attr])))
+                            new Hash($algo, strtolower((string) $rom[$attr]))
                         );
                     }
                 }
                 $roms[] = new Rom(
-                    strval($rom['name']),
-                    intval($rom['size']),
+                    (string) $rom['name'],
+                    (int) $rom['size'],
                     $hashes,
                 );
             }
             yield new Game(
-                strval($game['name']),
-                strval($game['description']),
+                (string) $game['name'],
+                (string) $game['description'],
                 $roms,
             );
         }

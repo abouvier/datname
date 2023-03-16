@@ -19,11 +19,12 @@ class Datafile
             Directory::class,
             Logiqx::class,
             Clrmamepro::class,
-            Dummy::class,
         ] as $class) {
             if ($class::validate($datafile)) {
                 return new $class($datafile);
             }
         }
+
+        return new Dummy();
     }
 }

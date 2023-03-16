@@ -6,6 +6,9 @@ namespace DatName;
 
 use Ramsey\Collection\AbstractSet;
 
+/**
+ * @extends AbstractSet<Hash>
+ */
 final class Hashes extends AbstractSet
 {
     public function getType(): string

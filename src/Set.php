@@ -9,10 +9,13 @@ use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Interface\Set as SetInterface;
 use DatName\Set\Directory;
 use DatName\Set\Zip;
-use Iterator;
+use Generator;
 use IteratorAggregate;
 use Stringable;
 
+/**
+ * @implements IteratorAggregate<int, File>
+ */
 class Set implements IteratorAggregate, Stringable
 {
     public function __construct(private SetInterface $set, private Algos $algos)
@@ -21,10 +24,13 @@ class Set implements IteratorAggregate, Stringable
 
     public function __toString(): string
     {
-        return strval($this->set);
+        return (string) $this->set;
     }
 
-    public function getIterator(): Iterator
+    /**
+     * @return Generator<int, File>
+     */
+    public function getIterator(): Generator
     {
         foreach ($this->set as $file) {
             yield new FileCache($file, $this->algos);

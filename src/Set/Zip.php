@@ -19,7 +19,7 @@ class Zip extends Directory
             return false;
         }
 
-        return true === (new ZipArchive())->open($set->getPathname());
+        return true === (new ZipArchive())->open((string) $set);
     }
 
     public function getDatname(Game $game): string
@@ -30,7 +30,7 @@ class Zip extends Directory
     public function getIterator(): Generator
     {
         $zip = new ZipArchive();
-        if (true !== $zip->open($this->getPathname())) {
+        if (true !== $zip->open((string) $this->set)) {
             throw new AccessDenied('zip open error');
         }
         for ($i = 0; $i < $zip->numFiles; ++$i) {

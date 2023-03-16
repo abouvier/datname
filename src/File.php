@@ -21,7 +21,7 @@ class File implements Stringable
 
     public function __toString(): string
     {
-        return strval($this->file);
+        return (string) $this->file;
     }
 
     public function getHashes(): Hashes
@@ -31,22 +31,23 @@ class File implements Stringable
                 new Hash(Algo::CRC, $this->file->getFastCrc()),
             ]);
         }
-        $hashes = [];
+        $contexts = [];
         foreach ($this->algos as $algo) {
-            $hashes[$algo->value] = hash_init($algo->value);
+            $contexts[$algo->value] = hash_init($algo->value);
         }
         $stream = $this->file->getStream();
         while (!$stream->eof()) {
-            $data = $stream->read($this->file::READ_SIZE);
-            foreach ($hashes as $hash) {
-                hash_update($hash, $data);
+            $data = $stream->read((int) $this->file::READ_SIZE);
+            foreach ($contexts as $context) {
+                hash_update($context, $data);
             }
         }
-        foreach ($hashes as $algo => &$hash) {
-            $hash = new Hash(Algo::from($algo), hash_final($hash));
+        $hashes = new Hashes();
+        foreach ($contexts as $algo => $context) {
+            $hashes[] = new Hash(Algo::from($algo), hash_final($context));
         }
 
-        return new Hashes($hashes);
+        return $hashes;
     }
 
     public function matches(Rom $rom): bool

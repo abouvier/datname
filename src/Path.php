@@ -11,7 +11,7 @@ final class Path extends SplFileInfo
 {
     public static function createFromSplFileInfo(SplFileInfo $path): static
     {
-        return new static(strval($path));
+        return new static((string) $path);
     }
 
     public function __construct(
@@ -32,7 +32,7 @@ final class Path extends SplFileInfo
             throw new Filesystem($message);
         });
         try {
-            return file_get_contents(strval($this));
+            return file_get_contents((string) $this);
         } finally {
             restore_error_handler();
         }

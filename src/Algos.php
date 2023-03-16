@@ -7,6 +7,9 @@ namespace DatName;
 use DatName\Hash\Algo;
 use Ramsey\Collection\AbstractSet;
 
+/**
+ * @extends AbstractSet<Algo>
+ */
 final class Algos extends AbstractSet
 {
     public function getType(): string

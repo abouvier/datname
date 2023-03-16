@@ -26,8 +26,11 @@
 		"ext-hash": "*",
 		"ext-spl": "*",
 		"abouvier/clrmamepro-parser": "^0.1",
-		"lunkkun/caching-generator": "^3.1",
-		"ramsey/collection": "^1.2"
+		"ramsey/collection": "^2.0"
+	},
+	"require-dev": {
+		"jetbrains/phpstorm-stubs": "@dev",
+		"vimeo/psalm": "@stable"
 	},
 	"suggest": {
 		"ext-dom": "Needed to support Logiqx datfiles",

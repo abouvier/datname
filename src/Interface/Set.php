@@ -9,6 +9,9 @@ use DatName\Path;
 use IteratorAggregate;
 use Stringable;
 
+/**
+ * @extends IteratorAggregate<int, File>
+ */
 interface Set extends IteratorAggregate, Stringable
 {
     public static function validate(Path $set): bool;

@@ -8,12 +8,18 @@ use DatName\Interface\Datafile as DatafileInterface;
 use Generator;
 use IteratorAggregate;
 
+/**
+ * @implements IteratorAggregate<int, Game>
+ */
 final class Datafile implements IteratorAggregate
 {
     public function __construct(private DatafileInterface $datafile)
     {
     }
 
+    /**
+     * @return Generator<int, Game>
+     */
     public function getIterator(): Generator
     {
         yield from $this->datafile;

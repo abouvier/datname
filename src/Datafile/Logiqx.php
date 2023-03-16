@@ -15,6 +15,7 @@ use DatName\Interface\Datafile;
 use DatName\Path;
 use DOMDocument;
 use Generator;
+use SimpleXMLElement;
 
 final class Logiqx implements Datafile
 {
@@ -39,7 +40,7 @@ final class Logiqx implements Datafile
         );
         $use_errors = libxml_use_internal_errors(true);
         $xml = new DOMDocument();
-        $xml->load(strval($datafile));
+        $xml->load((string) $datafile);
         $validate = $xml->validate();
         libxml_use_internal_errors($use_errors);
         libxml_set_external_entity_loader(null);
@@ -54,13 +55,15 @@ final class Logiqx implements Datafile
     public function getIterator(): Generator
     {
         $use_errors = libxml_use_internal_errors(true);
-        $xml = simplexml_load_file($this->datafile->getPathname());
+        $xml = simplexml_load_file((string) $this->datafile);
         libxml_use_internal_errors($use_errors);
         if (false === $xml) {
             throw new AccessDenied('xml load error');
         }
+        /** @var SimpleXMLElement $game */
         foreach ($xml->game as $game) {
             $roms = [];
+            /** @var SimpleXMLElement $rom */
             foreach ($game->rom as $rom) {
                 $hashes = new Hashes();
                 foreach ([
@@ -71,20 +74,20 @@ final class Logiqx implements Datafile
                 ] as $attr => $algo) {
                     if (isset($rom[$attr])) {
                         $hashes->add(
-                            new Hash($algo, strtolower(strval($rom[$attr])))
+                            new Hash($algo, strtolower((string) $rom[$attr]))
                         );
                     }
                 }
                 $roms[] = new Rom(
-                    strval($rom['name']),
-                    intval($rom['size']),
+                    (string) $rom['name'],
+                    (int) $rom['size'],
                     $hashes,
-                    Status::tryFrom(strval($rom['status'])) ?? Status::GOOD,
+                    Status::tryFrom((string) $rom['status']) ?? Status::GOOD,
                 );
             }
             yield new Game(
-                strval($game['name']),
-                strval($game->description),
+                (string) $game['name'],
+                (string) $game->description,
                 $roms,
             );
         }

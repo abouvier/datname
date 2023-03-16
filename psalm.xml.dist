@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="1"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="false"
+>
+    <projectFiles>
+        <directory name="src" />
+        <file name="bin/datname" />
+        <file name=".php-cs-fixer.dist.php" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <stubs>
+        <file name="vendor/jetbrains/phpstorm-stubs/zip/zip.php" />
+    </stubs>
+
+    <issueHandlers>
+        <ImplicitToStringCast>
+            <errorLevel type="suppress">
+                <file name="bin/datname" />
+            </errorLevel>
+        </ImplicitToStringCast>
+    </issueHandlers>
+</psalm>
