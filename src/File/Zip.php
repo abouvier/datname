@@ -8,18 +8,17 @@ use DatName\Exception\Filesystem\AccessDenied;
 use DatName\Game\Rom;
 use DatName\Path;
 use DatName\Stream;
-use ZipArchive;
 
 class Zip extends Generic
 {
-    protected ?ZipArchive $zip = null;
+    protected ?\ZipArchive $zip = null;
 
     public static function validate(Path $file): bool
     {
         if (!extension_loaded('zip')) {
             return false;
         }
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if (true !== $zip->open($file->getPathname())) {
             return false;
         }
@@ -47,12 +46,12 @@ class Zip extends Generic
         return $this->file->getEntryname();
     }
 
-    protected function getInnerZip(): ZipArchive
+    protected function getInnerZip(): \ZipArchive
     {
         if (isset($this->zip)) {
             return $this->zip;
         }
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if (true !== $zip->open($this->file->getPathname())) {
             throw new AccessDenied(sprintf("cannot open zip file '%s'", $this->file));
         }

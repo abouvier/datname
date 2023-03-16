@@ -13,9 +13,6 @@ use DatName\Hash\Algo;
 use DatName\Hashes;
 use DatName\Interface\Datafile;
 use DatName\Path;
-use DOMDocument;
-use Generator;
-use SimpleXMLElement;
 
 final class Logiqx implements Datafile
 {
@@ -39,7 +36,7 @@ final class Logiqx implements Datafile
             }
         );
         $use_errors = libxml_use_internal_errors(true);
-        $xml = new DOMDocument();
+        $xml = new \DOMDocument();
         $xml->load((string) $datafile);
         $validate = $xml->validate();
         libxml_use_internal_errors($use_errors);
@@ -52,7 +49,7 @@ final class Logiqx implements Datafile
     {
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         $use_errors = libxml_use_internal_errors(true);
         $xml = simplexml_load_file((string) $this->datafile);
@@ -60,10 +57,10 @@ final class Logiqx implements Datafile
         if (false === $xml) {
             throw new AccessDenied('xml load error');
         }
-        /** @var SimpleXMLElement $game */
+        /** @var \SimpleXMLElement $game */
         foreach ($xml->game as $game) {
             $roms = [];
-            /** @var SimpleXMLElement $rom */
+            /** @var \SimpleXMLElement $rom */
             foreach ($game->rom as $rom) {
                 $hashes = new Hashes();
                 foreach ([

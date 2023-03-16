@@ -8,7 +8,6 @@ use DatName\Factory\File as FileFactory;
 use DatName\Game;
 use DatName\Interface\Set;
 use DatName\Path;
-use Generator;
 
 class File implements Set
 {
@@ -36,7 +35,7 @@ class File implements Set
         return $this->set->getPath().DIRECTORY_SEPARATOR.$game->getName();
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         yield FileFactory::create($this->set);
     }

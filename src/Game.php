@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use Countable;
 use DatName\Game\Rom;
-use Generator;
-use IteratorAggregate;
-use Stringable;
 
 /**
- * @implements IteratorAggregate<int, Rom>
+ * @implements \IteratorAggregate<int, Rom>
  */
-final class Game implements Countable, IteratorAggregate, Stringable
+final class Game implements \Countable, \IteratorAggregate, \Stringable
 {
     /**
      * @param list<Rom> $roms
@@ -41,9 +37,9 @@ final class Game implements Countable, IteratorAggregate, Stringable
     }
 
     /**
-     * @return Generator<int, Rom>
+     * @return \Generator<int, Rom>
      */
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         foreach ($this->roms as $rom) {
             yield $rom;

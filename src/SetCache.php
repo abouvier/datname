@@ -4,31 +4,27 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use CachingIterator;
-use Generator;
-use IteratorAggregate;
-
 final class SetCache extends Set
 {
     /**
-     * @var IteratorAggregate<int, File>
+     * @var \IteratorAggregate<int, File>
      */
-    private ?IteratorAggregate $files = null;
+    private ?\IteratorAggregate $files = null;
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         if (is_null($this->files)) {
             $this->files = new /**
-              * @implements IteratorAggregate<int, File>
-              */ class(parent::getIterator()) implements IteratorAggregate {
-                private CachingIterator $iterator;
+              * @implements \IteratorAggregate<int, File>
+              */ class(parent::getIterator()) implements \IteratorAggregate {
+                private \CachingIterator $iterator;
 
-                public function __construct(Generator $generator)
+                public function __construct(\Generator $generator)
                 {
-                    $this->iterator = new CachingIterator($generator, CachingIterator::FULL_CACHE);
+                    $this->iterator = new \CachingIterator($generator, \CachingIterator::FULL_CACHE);
                 }
 
-                public function getIterator(): Generator
+                public function getIterator(): \Generator
                 {
                     if ($this->iterator->hasNext()) {
                         yield from $this->iterator;

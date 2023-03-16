@@ -7,9 +7,8 @@ namespace DatName\Interface;
 use DatName\Game\Rom;
 use DatName\Path;
 use DatName\Stream;
-use Stringable;
 
-interface File extends Stringable
+interface File extends \Stringable
 {
     public static function validate(Path $file): bool;
 

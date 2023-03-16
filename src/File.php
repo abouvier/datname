@@ -9,9 +9,8 @@ use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Game\Rom;
 use DatName\Hash\Algo;
 use DatName\Interface\File as FileInterface;
-use Stringable;
 
-class File implements Stringable
+class File implements \Stringable
 {
     public function __construct(
         private FileInterface $file,

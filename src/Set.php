@@ -9,14 +9,11 @@ use DatName\Exception\Filesystem\FileAlreadyExists;
 use DatName\Interface\Set as SetInterface;
 use DatName\Set\Directory;
 use DatName\Set\Zip;
-use Generator;
-use IteratorAggregate;
-use Stringable;
 
 /**
- * @implements IteratorAggregate<int, File>
+ * @implements \IteratorAggregate<int, File>
  */
-class Set implements IteratorAggregate, Stringable
+class Set implements \IteratorAggregate, \Stringable
 {
     public function __construct(private SetInterface $set, private Algos $algos)
     {
@@ -28,9 +25,9 @@ class Set implements IteratorAggregate, Stringable
     }
 
     /**
-     * @return Generator<int, File>
+     * @return \Generator<int, File>
      */
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         foreach ($this->set as $file) {
             yield new FileCache($file, $this->algos);

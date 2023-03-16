@@ -16,45 +16,45 @@ $options = getopt('a:d:h', ['algo:', 'datafile:', 'help'], $index);
 
 foreach ($options as $option => $value) {
     switch ($option) {
-    case 'a':
-    case 'algo':
-        /** @var non-empty-list<string>|string $value */
-        if (is_array($value)) {
-            $value = implode(',', $value);
-        }
-        $algos = new Algos();
-        foreach (array_unique(explode(',', $value)) as $algo) {
-            switch ($algo) {
-            case 'crc':
-                $algos[] = Algo::CRC;
-                break;
-            case 'md5':
-                $algos[] = Algo::MD5;
-                break;
-            case 'sha1':
-                $algos[] = Algo::SHA1;
-                break;
-            case 'sha256':
-                $algos[] = Algo::SHA256;
-                break;
-            default:
-                fprintf(STDERR, "'%s' is not a valid hashing algorithm: crc, md5, sha1 or sha256\n", $algo);
-                exit(1);
+        case 'a':
+        case 'algo':
+            /** @var non-empty-list<string>|string $value */
+            if (is_array($value)) {
+                $value = implode(',', $value);
             }
-        }
-        break;
-    case 'd':
-    case 'datafile':
-        /** @var non-empty-list<string>|string $value */
-        if (is_array($value)) {
-            $value = end($value);
-        }
-        $datapath = $value;
-        break;
-    case 'h':
-    case 'help':
-        printf("datname [-a|--algo NAME[,NAME...]] [-d|--datafile PATH] [--help] [PATH...]\n");
-        exit;
+            $algos = new Algos();
+            foreach (array_unique(explode(',', $value)) as $algo) {
+                switch ($algo) {
+                    case 'crc':
+                        $algos[] = Algo::CRC;
+                        break;
+                    case 'md5':
+                        $algos[] = Algo::MD5;
+                        break;
+                    case 'sha1':
+                        $algos[] = Algo::SHA1;
+                        break;
+                    case 'sha256':
+                        $algos[] = Algo::SHA256;
+                        break;
+                    default:
+                        fprintf(STDERR, "'%s' is not a valid hashing algorithm: crc, md5, sha1 or sha256\n", $algo);
+                        exit(1);
+                }
+            }
+            break;
+        case 'd':
+        case 'datafile':
+            /** @var non-empty-list<string>|string $value */
+            if (is_array($value)) {
+                $value = end($value);
+            }
+            $datapath = $value;
+            break;
+        case 'h':
+        case 'help':
+            printf("datname [-a|--algo NAME[,NAME...]] [-d|--datafile PATH] [--help] [PATH...]\n");
+            exit;
     }
 }
 

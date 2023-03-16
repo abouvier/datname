@@ -6,7 +6,6 @@ namespace DatName\Datafile;
 
 use DatName\Interface\Datafile;
 use DatName\Path;
-use EmptyIterator;
 
 final class Dummy implements Datafile
 {
@@ -15,8 +14,8 @@ final class Dummy implements Datafile
         return true;
     }
 
-    public function getIterator(): EmptyIterator
+    public function getIterator(): \EmptyIterator
     {
-        return new EmptyIterator();
+        return new \EmptyIterator();
     }
 }

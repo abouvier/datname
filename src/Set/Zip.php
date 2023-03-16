@@ -8,8 +8,6 @@ use DatName\Exception\Filesystem\AccessDenied;
 use DatName\Factory\File;
 use DatName\Game;
 use DatName\Path;
-use Generator;
-use ZipArchive;
 
 class Zip extends Directory
 {
@@ -19,7 +17,7 @@ class Zip extends Directory
             return false;
         }
 
-        return true === (new ZipArchive())->open((string) $set);
+        return true === (new \ZipArchive())->open((string) $set);
     }
 
     public function getDatname(Game $game): string
@@ -27,9 +25,9 @@ class Zip extends Directory
         return parent::getDatname($game).'.zip';
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if (true !== $zip->open((string) $this->set)) {
             throw new AccessDenied('zip open error');
         }

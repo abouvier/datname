@@ -7,12 +7,6 @@ namespace DatName\Datafile;
 use DatName\Factory\Datafile as DatafileFactory;
 use DatName\Interface\Datafile;
 use DatName\Path;
-use Generator;
-use RecursiveDirectoryIterator;
-use RecursiveFilterIterator;
-use RecursiveIterator;
-use RecursiveIteratorIterator;
-use SplFileInfo;
 
 final class Directory implements Datafile
 {
@@ -25,13 +19,13 @@ final class Directory implements Datafile
     {
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
-        /** @var RecursiveIterator<string, SplFileInfo> */
-        $dir = new RecursiveDirectoryIterator($this->datafile->getPathname());
+        /** @var \RecursiveIterator<string, \SplFileInfo> */
+        $dir = new \RecursiveDirectoryIterator($this->datafile->getPathname());
         $filter = new /**
-         * @extends RecursiveFilterIterator<string, SplFileInfo, RecursiveIterator<string, SplFileInfo>>
-         */ class($dir) extends RecursiveFilterIterator {
+         * @extends \RecursiveFilterIterator<string, \SplFileInfo, \RecursiveIterator<string, \SplFileInfo>>
+         */ class($dir) extends \RecursiveFilterIterator {
             public function accept(): bool
             {
                 $ext = $this->current()->getExtension();
@@ -39,8 +33,8 @@ final class Directory implements Datafile
                 return $this->hasChildren() or 0 == strcasecmp($ext, 'dat');
             }
         };
-        /** @var SplFileInfo $file */
-        foreach (new RecursiveIteratorIterator($filter) as $file) {
+        /** @var \SplFileInfo $file */
+        foreach (new \RecursiveIteratorIterator($filter) as $file) {
             foreach (DatafileFactory::create(Path::createFromSplFileInfo($file)) as $game) {
                 yield $game;
             }

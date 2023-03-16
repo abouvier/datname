@@ -8,7 +8,6 @@ use DatName\File\Generic;
 use DatName\File\Zip;
 use DatName\Path;
 use DatName\Stream;
-use ZipArchive;
 
 final class Nes extends Zip
 {
@@ -17,7 +16,7 @@ final class Nes extends Zip
         if (!extension_loaded('zip')) {
             return false;
         }
-        $zip = new ZipArchive();
+        $zip = new \ZipArchive();
         if (true !== $zip->open($file->getPathname())) {
             return false;
         }

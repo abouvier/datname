@@ -6,9 +6,6 @@ namespace DatName\Set;
 
 use DatName\Factory\File as FileFactory;
 use DatName\Path;
-use FilesystemIterator;
-use Generator;
-use SplFileInfo;
 
 class Directory extends File
 {
@@ -17,12 +14,12 @@ class Directory extends File
         return $set->isDir();
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         /**
-         * @var SplFileInfo $file
+         * @var \SplFileInfo $file
          */
-        foreach (new FilesystemIterator($this->getPathname()) as $file) {
+        foreach (new \FilesystemIterator($this->getPathname()) as $file) {
             if ($file->isDir()) {
                 continue;
             }

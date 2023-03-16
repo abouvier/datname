@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace DatName;
 
 use DatName\Exception\Filesystem;
-use SplFileInfo;
 
-final class Path extends SplFileInfo
+final class Path extends \SplFileInfo
 {
-    public static function createFromSplFileInfo(SplFileInfo $path): static
+    public static function createFromSplFileInfo(\SplFileInfo $path): static
     {
         return new static((string) $path);
     }

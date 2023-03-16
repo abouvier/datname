@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace DatName;
 
 use DatName\Hash\Algo;
-use Stringable;
 
-final class Hash implements Stringable
+final class Hash implements \Stringable
 {
     public function __construct(
         public readonly Algo $algo,

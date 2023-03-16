@@ -12,8 +12,6 @@ use DatName\Hash\Algo;
 use DatName\Hashes;
 use DatName\Interface\Datafile;
 use DatName\Path;
-use Exception;
-use Generator;
 
 final class Clrmamepro implements Datafile
 {
@@ -28,7 +26,7 @@ final class Clrmamepro implements Datafile
         $parser = new Parser();
         try {
             return $parser->validate($datafile->readFile());
-        } catch (Exception) {
+        } catch (\Exception) {
             return false;
         }
     }
@@ -37,7 +35,7 @@ final class Clrmamepro implements Datafile
     {
     }
 
-    public function getIterator(): Generator
+    public function getIterator(): \Generator
     {
         $parser = new Parser();
         $sections = $parser->parse($this->datafile->readFile());
