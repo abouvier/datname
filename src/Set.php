@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Exception\Filesystem;
 use DatName\Exception\Filesystem\FileAlreadyExists;
+use DatName\Exception\Filesystem\RenameFailed;
 use DatName\Interface\Set as SetInterface;
 use DatName\Set\Directory;
 use DatName\Set\Zip;
@@ -53,10 +53,10 @@ class Set implements \IteratorAggregate, \Stringable
     {
         $newname = $this->set->getDatname($game);
         if ($this->set->exists($newname)) {
-            throw new FileAlreadyExists(sprintf("cannot rename set '%s' to '%s' because the target already exists", $this->set, $newname));
+            throw new FileAlreadyExists($this->set, $newname);
         }
         if (!$this->set->rename($newname)) {
-            throw new Filesystem(sprintf("cannot rename set '%s' to '%s'", $this->set, $newname));
+            throw new RenameFailed($this->set, $newname);
         }
     }
 

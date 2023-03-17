@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\File;
 
-use DatName\Exception\Filesystem\AccessDenied;
+use DatName\Exception\Filesystem;
 use DatName\Game\Rom;
 use DatName\Hash\Algo;
 use DatName\Interface\File;
@@ -64,12 +64,14 @@ class Generic implements File
 
     public function getStream(): Stream
     {
-        $stream = fopen($this->getPathname(), 'rb');
-        if (false === $stream) {
-            throw new AccessDenied(sprintf("cannot open file '%s'", $this->file));
+        set_error_handler(function (int $severity, string $message): bool {
+            throw new Filesystem($message);
+        });
+        try {
+            return new Stream(fopen((string) $this->file, 'rb'));
+        } finally {
+            restore_error_handler();
         }
-
-        return new Stream($stream);
     }
 
     public function rename(string $newname): bool

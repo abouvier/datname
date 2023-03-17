@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Exception\Filesystem;
 use DatName\Exception\Filesystem\FileAlreadyExists;
+use DatName\Exception\Filesystem\RenameFailed;
 use DatName\Game\Rom;
 use DatName\Hash\Algo;
 use DatName\Interface\File as FileInterface;
@@ -67,10 +67,10 @@ class File implements \Stringable
     {
         $newname = $this->file->getDatname($rom);
         if ($this->file->exists($newname)) {
-            throw new FileAlreadyExists(sprintf("cannot rename file '%s' to '%s' because the target already exists", $this->file, $newname));
+            throw new FileAlreadyExists($this->file, $newname);
         }
         if (!$this->file->rename($newname)) {
-            throw new Filesystem(sprintf("cannot rename file '%s' to '%s'", $this->file, $newname));
+            throw new RenameFailed($this->file, $newname);
         }
     }
 }

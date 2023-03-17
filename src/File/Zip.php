@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\File;
 
-use DatName\Exception\Filesystem\AccessDenied;
+use DatName\Exception\Filesystem\OpenFailed;
 use DatName\Game\Rom;
 use DatName\Path;
 use DatName\Stream;
@@ -53,7 +53,7 @@ class Zip extends Generic
         }
         $zip = new \ZipArchive();
         if (true !== $zip->open($this->file->getPathname())) {
-            throw new AccessDenied(sprintf("cannot open zip file '%s'", $this->file));
+            throw new OpenFailed($this->file);
         }
 
         return $this->zip = $zip;
@@ -73,7 +73,7 @@ class Zip extends Generic
     {
         $stream = $this->getInnerZip()->getStream($this->getFilename());
         if (false === $stream) {
-            throw new AccessDenied(sprintf("cannot open file '%s'", $this->getPathname()));
+            throw new OpenFailed($this->file);
         }
 
         return new Stream($stream);

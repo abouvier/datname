@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\Datafile;
 
-use DatName\Exception\Filesystem\AccessDenied;
+use DatName\Exception\Filesystem\OpenFailed;
 use DatName\Game;
 use DatName\Game\Rom;
 use DatName\Game\Rom\Status;
@@ -38,11 +38,12 @@ final class Logiqx implements Datafile
         $use_errors = libxml_use_internal_errors(true);
         $xml = new \DOMDocument();
         $xml->load((string) $datafile);
-        $validate = $xml->validate();
-        libxml_use_internal_errors($use_errors);
-        libxml_set_external_entity_loader(null);
-
-        return $validate;
+        try {
+            return $xml->validate();
+        } finally {
+            libxml_use_internal_errors($use_errors);
+            libxml_set_external_entity_loader(null);
+        }
     }
 
     public function __construct(private Path $datafile)
@@ -55,7 +56,7 @@ final class Logiqx implements Datafile
         $xml = simplexml_load_file((string) $this->datafile);
         libxml_use_internal_errors($use_errors);
         if (false === $xml) {
-            throw new AccessDenied('xml load error');
+            throw new OpenFailed($this->datafile);
         }
         /** @var \SimpleXMLElement $game */
         foreach ($xml->game as $game) {

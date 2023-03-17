@@ -11,7 +11,11 @@ final class Nes extends Generic
 {
     public static function validate(Path $file): bool
     {
-        $header = $file->openFile('rb')->fread(16);
+        try {
+            $header = $file->openFile('rb')->fread(16);
+        } catch (\Exception) {
+            return false;
+        }
 
         return 16 == strlen($header) and str_starts_with($header, "NES\x1A");
     }

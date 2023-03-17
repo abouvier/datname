@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\Set;
 
-use DatName\Exception\Filesystem\AccessDenied;
+use DatName\Exception\Filesystem\OpenFailed;
 use DatName\Factory\File;
 use DatName\Game;
 use DatName\Path;
@@ -29,7 +29,7 @@ class Zip extends Directory
     {
         $zip = new \ZipArchive();
         if (true !== $zip->open((string) $this->set)) {
-            throw new AccessDenied('zip open error');
+            throw new OpenFailed($this->set);
         }
         for ($i = 0; $i < $zip->numFiles; ++$i) {
             $entryname = $zip->getNameIndex($i);
