@@ -22,7 +22,7 @@ final class Directory implements DatafileInterface
 
     public function getIterator(): \Generator
     {
-        /** @var \RecursiveIterator<string, \SplFileInfo> */
+        /** @var \RecursiveIterator<string, \SplFileInfo> $dir */
         $dir = new \RecursiveDirectoryIterator((string) $this->datafile);
         $filter = new RecursiveExtensionFilterIterator($dir, 'dat');
         /** @var \SplFileInfo $file */

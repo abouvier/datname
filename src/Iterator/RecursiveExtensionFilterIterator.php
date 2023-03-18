@@ -21,4 +21,12 @@ final class RecursiveExtensionFilterIterator extends \RecursiveFilterIterator
     {
         return $this->hasChildren() or 0 == strcasecmp($this->current()->getExtension(), $this->extension);
     }
+
+    public function getChildren(): static
+    {
+        /** @var \RecursiveIterator<string, \SplFileInfo> $iterator */
+        $iterator = $this->getInnerIterator();
+
+        return new static($iterator->getChildren(), $this->extension);
+    }
 }
