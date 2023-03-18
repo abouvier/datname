@@ -5,12 +5,12 @@ require __DIR__.'/../vendor/autoload.php';
 
 use DatName\Algos;
 use DatName\Datafile;
-use DatName\Factory\Datafile as DatafileFactory;
-use DatName\Factory\Set as SetFactory;
+use DatName\DatafileFactory;
+use DatName\Exception\ExceptionInterface as Exception;
 use DatName\Hash\Algo;
-use DatName\Interface\Exception;
 use DatName\Path;
 use DatName\SetCache;
+use DatName\SetFactory;
 
 $options = getopt('a:d:h', ['algo:', 'datafile:', 'help'], $index);
 

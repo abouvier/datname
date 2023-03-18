@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace DatName\Factory;
+namespace DatName;
 
-use DatName\Interface\Set as SetInterface;
-use DatName\Path;
 use DatName\Set\Directory;
 use DatName\Set\File;
 use DatName\Set\Zip;
 
-class Set
+class SetFactory
 {
     public static function create(Path $set): SetInterface
     {

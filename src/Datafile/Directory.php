@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DatName\Datafile;
 
-use DatName\Factory\Datafile as DatafileFactory;
-use DatName\Interface\Datafile;
-use DatName\Iterator\ExtensionRecursiveFilter;
+use DatName\DatafileFactory;
+use DatName\DatafileInterface;
+use DatName\Iterator\RecursiveExtensionFilterIterator;
 use DatName\Path;
 
-final class Directory implements Datafile
+final class Directory implements DatafileInterface
 {
     public static function validate(Path $datafile): bool
     {
@@ -24,7 +24,7 @@ final class Directory implements Datafile
     {
         /** @var \RecursiveIterator<string, \SplFileInfo> */
         $dir = new \RecursiveDirectoryIterator((string) $this->datafile);
-        $filter = new ExtensionRecursiveFilter($dir, 'dat');
+        $filter = new RecursiveExtensionFilterIterator($dir, 'dat');
         /** @var \SplFileInfo $file */
         foreach (new \RecursiveIteratorIterator($filter) as $file) {
             foreach (DatafileFactory::create(Path::createFromSplFileInfo($file)) as $game) {

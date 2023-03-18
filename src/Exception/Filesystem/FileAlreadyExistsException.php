@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DatName\Exception\Filesystem;
 
-use DatName\Exception\Filesystem;
+use DatName\Exception\FilesystemException;
 
-class FileAlreadyExists extends Filesystem
+class FileAlreadyExistsException extends FilesystemException
 {
     public function __construct(string|\Stringable $oldname, string $newname)
     {

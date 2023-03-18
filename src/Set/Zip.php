@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DatName\Set;
 
-use DatName\Exception\Filesystem\OpenFailed;
-use DatName\Factory\File;
+use DatName\Exception\Filesystem\OpenFailedException;
+use DatName\FileFactory;
 use DatName\Game;
 use DatName\Path;
 
@@ -29,14 +29,14 @@ class Zip extends Directory
     {
         $zip = new \ZipArchive();
         if (true !== $zip->open((string) $this->set)) {
-            throw new OpenFailed($this->set);
+            throw new OpenFailedException($this->set);
         }
         for ($i = 0; $i < $zip->numFiles; ++$i) {
             $entryname = $zip->getNameIndex($i);
             if (str_contains($entryname, DIRECTORY_SEPARATOR)) {
                 continue;
             }
-            yield File::create($this->set->withEntryname($entryname));
+            yield FileFactory::create($this->set->withEntryname($entryname));
         }
     }
 }

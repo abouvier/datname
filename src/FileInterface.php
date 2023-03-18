@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace DatName\Interface;
+namespace DatName;
 
 use DatName\Game\Rom;
-use DatName\Path;
-use DatName\Stream;
 
-interface File extends \Stringable
+interface FileInterface extends \Stringable
 {
     public static function validate(Path $file): bool;
 

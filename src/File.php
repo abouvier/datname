@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Exception\Filesystem\FileAlreadyExists;
-use DatName\Exception\Filesystem\RenameFailed;
+use DatName\Exception\Filesystem\FileAlreadyExistsException;
+use DatName\Exception\Filesystem\RenameFailedException;
 use DatName\Game\Rom;
 use DatName\Hash\Algo;
-use DatName\Interface\File as FileInterface;
 
 class File implements \Stringable
 {
@@ -67,10 +66,10 @@ class File implements \Stringable
     {
         $newname = $this->file->getDatname($rom);
         if ($this->file->exists($newname)) {
-            throw new FileAlreadyExists($this->file, $newname);
+            throw new FileAlreadyExistsException($this->file, $newname);
         }
         if (!$this->file->rename($newname)) {
-            throw new RenameFailed($this->file, $newname);
+            throw new RenameFailedException($this->file, $newname);
         }
     }
 }

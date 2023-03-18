@@ -7,7 +7,7 @@ namespace DatName\Iterator;
 /**
  * @extends \RecursiveFilterIterator<string, \SplFileInfo, \RecursiveIterator<string, \SplFileInfo>>
  */
-final class ExtensionRecursiveFilter extends \RecursiveFilterIterator
+final class RecursiveExtensionFilterIterator extends \RecursiveFilterIterator
 {
     /**
      * @param \RecursiveIterator<string, \SplFileInfo> $iterator

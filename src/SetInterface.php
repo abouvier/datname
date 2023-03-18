@@ -2,15 +2,12 @@
 
 declare(strict_types=1);
 
-namespace DatName\Interface;
-
-use DatName\Game;
-use DatName\Path;
+namespace DatName;
 
 /**
- * @extends \IteratorAggregate<int, File>
+ * @extends \IteratorAggregate<int, FileInterface>
  */
-interface Set extends \IteratorAggregate, \Stringable
+interface SetInterface extends \IteratorAggregate, \Stringable
 {
     public static function validate(Path $set): bool;
 

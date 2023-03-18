@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace DatName\Datafile;
 
-use DatName\Interface\Datafile;
+use DatName\DatafileInterface;
 use DatName\Path;
 
-final class Dummy implements Datafile
+final class Dummy implements DatafileInterface
 {
     public static function validate(Path $datafile): bool
     {

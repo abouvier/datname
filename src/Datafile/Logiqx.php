@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace DatName\Datafile;
 
-use DatName\Exception\Filesystem\OpenFailed;
+use DatName\DatafileInterface;
+use DatName\Exception\Filesystem\OpenFailedException;
 use DatName\Game;
 use DatName\Game\Rom;
 use DatName\Game\Rom\Status;
 use DatName\Hash;
 use DatName\Hash\Algo;
 use DatName\Hashes;
-use DatName\Interface\Datafile;
 use DatName\Path;
 
-final class Logiqx implements Datafile
+final class Logiqx implements DatafileInterface
 {
     public static function validate(Path $datafile): bool
     {
@@ -56,7 +56,7 @@ final class Logiqx implements Datafile
         $xml = simplexml_load_file((string) $this->datafile);
         libxml_use_internal_errors($use_errors);
         if (false === $xml) {
-            throw new OpenFailed($this->datafile);
+            throw new OpenFailedException($this->datafile);
         }
         /** @var \SimpleXMLElement $game */
         foreach ($xml->game as $game) {

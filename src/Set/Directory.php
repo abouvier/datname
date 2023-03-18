@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName\Set;
 
-use DatName\Factory\File as FileFactory;
+use DatName\FileFactory;
 use DatName\Path;
 
 class Directory extends File

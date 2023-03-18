@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Exception\InvalidArgument;
-use DatName\Exception\Stream as StreamException;
+use DatName\Exception\InvalidArgumentException;
+use DatName\Exception\StreamException;
 
 final class Stream
 {
@@ -17,7 +17,7 @@ final class Stream
     public function __construct(private $stream)
     {
         if ('stream' != get_resource_type($stream)) {
-            throw new InvalidArgument('not a stream');
+            throw new InvalidArgumentException('not a stream');
         }
         $this->seekable = stream_get_meta_data($stream)['seekable'];
     }

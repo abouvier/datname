@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Interface\Datafile as DatafileInterface;
-
 /**
  * @implements \IteratorAggregate<int, Game>
  */

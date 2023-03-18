@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace DatName\Exception\Filesystem;
 
-use DatName\Exception\Filesystem;
+use DatName\Exception\FilesystemException;
 
-class ReadFailed extends Filesystem
+class ReadFailedException extends FilesystemException
 {
     public function __construct(string|\Stringable $file)
     {

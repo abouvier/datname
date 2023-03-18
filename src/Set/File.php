@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace DatName\Set;
 
-use DatName\Factory\File as FileFactory;
+use DatName\FileFactory;
 use DatName\Game;
-use DatName\Interface\Set;
 use DatName\Path;
+use DatName\SetInterface;
 
-class File implements Set
+class File implements SetInterface
 {
     public static function validate(Path $set): bool
     {

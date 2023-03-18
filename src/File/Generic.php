@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace DatName\File;
 
-use DatName\Exception\Filesystem;
+use DatName\Exception\FilesystemException;
+use DatName\FileInterface;
 use DatName\Game\Rom;
 use DatName\Hash\Algo;
-use DatName\Interface\File;
 use DatName\Path;
 use DatName\Stream;
 
-class Generic implements File
+class Generic implements FileInterface
 {
     public const READ_SIZE = 2 ** 16;
 
@@ -65,7 +65,7 @@ class Generic implements File
     public function getStream(): Stream
     {
         set_error_handler(function (int $severity, string $message): bool {
-            throw new Filesystem($message);
+            throw new FilesystemException($message);
         });
         try {
             return new Stream(fopen((string) $this->file, 'rb'));

@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace DatName\Datafile;
 
 use Abouvier\Clrmamepro\Parser;
+use DatName\DatafileInterface;
 use DatName\Game;
 use DatName\Game\Rom;
 use DatName\Hash;
 use DatName\Hash\Algo;
 use DatName\Hashes;
-use DatName\Interface\Datafile;
 use DatName\Path;
 
-final class Clrmamepro implements Datafile
+final class Clrmamepro implements DatafileInterface
 {
     public static function validate(Path $datafile): bool
     {

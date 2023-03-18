@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace DatName;
 
-use DatName\Exception\Filesystem;
+use DatName\Exception\FilesystemException;
 
 final class Path extends \SplFileInfo
 {
@@ -28,7 +28,7 @@ final class Path extends \SplFileInfo
     public function readFile(): string
     {
         set_error_handler(function (int $severity, string $message): bool {
-            throw new Filesystem($message);
+            throw new FilesystemException($message);
         });
         try {
             return file_get_contents((string) $this);
