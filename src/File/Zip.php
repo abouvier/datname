@@ -15,6 +15,9 @@ class Zip extends Generic
 
     public static function validate(Path $file): bool
     {
+        if ($file->isDir() or !$file->getSize()) {
+            return false;
+        }
         if (!extension_loaded('zip')) {
             return false;
         }

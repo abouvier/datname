@@ -11,6 +11,9 @@ final class Nes extends Generic
 {
     public static function validate(Path $file): bool
     {
+        if ($file->isDir()) {
+            return false;
+        }
         try {
             $header = $file->openFile('rb')->fread(16);
         } catch (\Exception) {

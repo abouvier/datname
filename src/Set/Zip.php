@@ -9,10 +9,13 @@ use DatName\FileFactory;
 use DatName\Game;
 use DatName\Path;
 
-class Zip extends Directory
+final class Zip extends Directory
 {
     public static function validate(Path $set): bool
     {
+        if ($set->isDir() or !$set->getSize()) {
+            return false;
+        }
         if (!extension_loaded('zip')) {
             return false;
         }

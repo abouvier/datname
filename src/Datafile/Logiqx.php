@@ -18,7 +18,7 @@ final class Logiqx implements DatafileInterface
 {
     public static function validate(Path $datafile): bool
     {
-        if ($datafile->isDir()) {
+        if ($datafile->isDir() or !$datafile->getSize()) {
             return false;
         }
         foreach (['dom', 'libxml', 'SimpleXML'] as $ext) {
